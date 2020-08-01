@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class ProductService {
 
-  private baseUrl = 'http://localhost:8080/api/products';
+  private baseUrl = 'http://localhost:8080/api/products?size=100';
   constructor(private httpClient: HttpClient) { }
 
   // Observables are used for passing messages between parts of the app
@@ -17,9 +17,10 @@ export class ProductService {
   // of prodcuts. 
   // The getResponse is an interface that parametrizes the content of the response
   // We use the map operator to do this parametrization an store it into the observable
-  
-  getProductList(): Observable<Product[]>{
-    return  this.httpClient.get<GetResponse>(this.baseUrl).pipe(
+  getProductList(categoryId: number): Observable<Product[]>{
+
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId=${categoryId}`
+    return  this.httpClient.get<GetResponse>(searchUrl).pipe(
       map(response => response._embedded.products)
     );
   }

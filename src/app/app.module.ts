@@ -5,12 +5,26 @@ import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
+import { Routes, RouterModule } from '@angular/router'
+
+
+// Definition of routes, similar to AngularJS, defining the components
+// for each one, probably for the templates
+const routes: Routes = [
+  { path: 'category/:id', component: ProductListComponent},
+  { path: 'category', component: ProductListComponent},
+  { path: 'products', component: ProductListComponent},
+  { path: '', redirectTo: '/products', pathMatch: 'full'},
+  { path: '**', redirectTo: '/products', pathMatch: 'full' },
+
+];
 @NgModule({
   declarations: [
     AppComponent,
     ProductListComponent
   ],
   imports: [
+    RouterModule.forRoot(routes),
     BrowserModule,
     HttpClientModule
   ],
