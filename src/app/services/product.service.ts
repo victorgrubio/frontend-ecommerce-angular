@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Product } from '../common/product';
 import { map } from 'rxjs/operators';
 import { ProductCategory } from '../common/product-category';
+import { NumberSymbol } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,21 @@ export class ProductService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getProductListPaginate( page: number,
+                          pageSize: number,
+                          categoryId: number): Observable<GetResponseProducts>{
+
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${categoryId}`+
+                            `&page=${page}&size=${pageSize}`
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
+  }
+
   // Observables are used for passing messages between parts of the app
   // In this case, is used to parse the response from Spring into a list
   // of prodcuts. 
   // The getResponse is an interface that parametrizes the content of the response
   // We use the map operator to do this parametrization an store it into the observable
   getProductList(categoryId: number): Observable<Product[]>{
-
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${categoryId}`
     return this.getProducts(searchUrl);
   }
@@ -43,6 +52,15 @@ export class ProductService {
     );
   }
 
+  searchProductsPaginate( page: number,
+                          pageSize: number,
+                          keyword: string): Observable<GetResponseProducts>{
+
+  const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${keyword}`+
+        `&page=${page}&size=${pageSize}`
+  return this.httpClient.get<GetResponseProducts>(searchUrl);
+  }
+
   getProduct(productId: number): Observable<Product>{
     // build url based on the product id
     const productUrl = `${this.baseUrl}/${productId}`;
@@ -54,6 +72,12 @@ export class ProductService {
 interface GetResponseProducts {
   _embedded: {
     products: Product[];
+  },
+  page: {
+    size:number,
+    totalElements: number,
+    totalPages: number,
+    number: number
   }
 }
 
