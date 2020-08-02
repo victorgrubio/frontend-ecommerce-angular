@@ -11,6 +11,8 @@ export class ProductListComponent implements OnInit {
 
   products: Product[];
   currentCategoryId: number;
+  searchMode: boolean;
+
   constructor(private productService: ProductService,
               private route: ActivatedRoute) { }
 
@@ -20,9 +22,30 @@ export class ProductListComponent implements OnInit {
     })
   }
 
+  listProducts(){
+    // check if the current route has the keyword element (search)
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+    if (this.searchMode){
+      this.handleSearchProducts();
+    }
+    else {
+      this.handleListProducts();
+    }
+  }
+
+  handleSearchProducts(){
+    const keyword = this.route.snapshot.paramMap.get('keyword');
+
+    this.productService.searchProducts(keyword).subscribe(
+      data => {
+        this.products = data;
+      }
+    )
+  }
+
   // Observable instance begins publishing values only when someone subscribes to it.
   // In this case we use the output of the method from the productService
-  listProducts(){
+  handleListProducts(){
     // this.route(active route).snapshot(status of route now).paramMap(map of all route params)
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 

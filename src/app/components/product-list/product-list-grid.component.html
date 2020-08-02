@@ -10,6 +10,12 @@
                         <a href="#" class="primary-btn">Add to cart</a>
                     </div>
                 </div>
+                <!-- if products is empty display message -->
+                <!-- The ? includes null/undefined: if products = null/undefined then if is true -->
+                <div *ngIf="products?.length == 0" class="alert alert-warning col-md-12" role="alert">
+                    No products found.
+                </div>
+
             </div>
         </div>
     </div>
