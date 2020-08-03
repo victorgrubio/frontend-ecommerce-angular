@@ -11,7 +11,7 @@
                             <h1>{{ currentProduct.name }}</h1>
                         </a>
                         <div class="price">{{ currentProduct.unitPrice | currency: 'EUR' }}</div>
-                        <a href="#" class="primary-btn">Add to cart</a>
+                        <button (click)="addToCart(currentProduct)" class="btn btn-primary btn-small">Add to cart</button>
                     </div>
                 </div>
                 <!-- if products is empty display message -->

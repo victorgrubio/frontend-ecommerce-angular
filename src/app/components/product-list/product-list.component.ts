@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
+import { CartService } from 'src/app/services/cart.service';
 import { Product } from 'src/app/common/product';
+import { CartItem } from 'src/app/common/cart-item';
 import { ActivatedRoute } from '@angular/router';
+import { fromEventPattern } from 'rxjs';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list-grid.component.html',
@@ -14,12 +17,13 @@ export class ProductListComponent implements OnInit {
   previousCategoryId: number = 1;
   searchMode: boolean = false;
   pageNumber: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 20;
   totalElements: number = 0;
 
   previousKeyword: string = null;
 
   constructor(private productService: ProductService,
+              private cartService: CartService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -56,23 +60,18 @@ export class ProductListComponent implements OnInit {
   handleListProducts(){
     // this.route(active route).snapshot(status of route now).paramMap(map of all route params)
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
-
     if (hasCategoryId){
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id'); //+ to convert to number
     } else {
       // default to category 1
       this.currentCategoryId = 1;
     }
-
     // Check if we have a diffent category than previous to avoid reload
     // If we have a different category  than previous, them pageNumber = 1
     if (this.previousCategoryId !== this.currentCategoryId){
       this.pageNumber = 1;
     }
-
     this.previousCategoryId = this.currentCategoryId;
-
-
     this.productService.getProductListPaginate(this.pageNumber - 1,
                                                this.pageSize,
                                                this.currentCategoryId)
@@ -92,5 +91,10 @@ export class ProductListComponent implements OnInit {
     this.pageSize = pageSize;
     this.pageNumber = 1;
     this.listProducts();
+  }
+
+  addToCart(product: Product){
+    const cartItem = new CartItem(product);
+    this.cartService.addToCart(cartItem);
   }
 }
