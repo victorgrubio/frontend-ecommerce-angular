@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ShopFormService } from 'src/app/services/shop-form.service'
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -23,7 +24,8 @@ export class CheckoutComponent implements OnInit {
   billingAddressStates: State[] = [];
 
   constructor(private formBuilder: FormBuilder,
-              private shopFormService: ShopFormService) { }
+              private shopFormService: ShopFormService,
+              private cartService: CartService) { }
 
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
@@ -75,8 +77,26 @@ export class CheckoutComponent implements OnInit {
          this.countries = data;
       }
     )
+    
+    this.getPriceQuantityData();
   }
 
+  getPriceQuantityData(){
+    //Update data of shipment
+    this.cartService.totalPrice.subscribe(
+      data => {
+        this.totalPrice = data;
+      }
+    );
+    this.cartService.totalQuantity.subscribe(
+      data => {
+        this.totalQuantity = data;
+      }
+    )
+    //compute cart total price and quantity
+    this.cartService.computeCartTotals();
+  }
+  
   copyShippingAddressToBillingAddress(event){
     if (event.target.checked){
       // copy values from shipping to billing
@@ -103,7 +123,6 @@ export class CheckoutComponent implements OnInit {
     } else {
       startMonth = 1;
     }
-
     this.shopFormService.getCreditCardMonths(startMonth).subscribe(
       data => {
         this.creditCardMonths = data;
@@ -113,9 +132,7 @@ export class CheckoutComponent implements OnInit {
 
   getStates(formGroupName: string){
     const formGroup = this.checkoutFormGroup.get(formGroupName);
-
     const countryCode = formGroup.value.country.code;
-
     this.shopFormService.getStates(countryCode).subscribe(
       data => {
         if (formGroupName === 'shippingAddress'){
@@ -129,7 +146,11 @@ export class CheckoutComponent implements OnInit {
 
   }
   onSubmit(){
-
+    console.log("Handling the submit button");
+    console.log(this.checkoutFormGroup.get('customer').value);
+    console.log("The email address is " + this.checkoutFormGroup.get('customer').value.email);
+    console.log("The shipping address country is " + this.checkoutFormGroup.get('shippingAddress').value.country.name);
+    console.log("The shipping address state is " + this.checkoutFormGroup.get('shippingAddress').value.state.name);
   }
 
 }
