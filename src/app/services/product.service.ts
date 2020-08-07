@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 import { Product } from '../common/product';
 import { map } from 'rxjs/operators';
 import { ProductCategory } from '../common/product-category';
-import { NumberSymbol } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  private baseUrl = 'http://localhost:8080/api/products';
-  private categoryUrl = 'http://localhost:8080/api/product-category';
+  private productUrl = `${environment.apiUrl}/products`;
+  private categoryUrl = `${environment.apiUrl}/product-category`;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -20,7 +20,7 @@ export class ProductService {
                           pageSize: number,
                           categoryId: number): Observable<GetResponseProducts>{
 
-    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${categoryId}`+
+    const searchUrl = `${this.productUrl}/search/findByCategoryId?id=${categoryId}`+
                             `&page=${page}&size=${pageSize}`
     return this.httpClient.get<GetResponseProducts>(searchUrl);
   }
@@ -31,7 +31,7 @@ export class ProductService {
   // The getResponse is an interface that parametrizes the content of the response
   // We use the map operator to do this parametrization an store it into the observable
   getProductList(categoryId: number): Observable<Product[]>{
-    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${categoryId}`
+    const searchUrl = `${this.productUrl}/search/findByCategoryId?id=${categoryId}`
     return this.getProducts(searchUrl);
   }
 
@@ -42,7 +42,7 @@ export class ProductService {
   }
 
   searchProducts(keyword: string): Observable<Product[]>{
-    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${keyword}`
+    const searchUrl = `${this.productUrl}/search/findByNameContaining?name=${keyword}`
     return this.getProducts(searchUrl);
   }
 
@@ -56,14 +56,14 @@ export class ProductService {
                           pageSize: number,
                           keyword: string): Observable<GetResponseProducts>{
 
-  const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${keyword}`+
+  const searchUrl = `${this.productUrl}/search/findByNameContaining?name=${keyword}`+
         `&page=${page}&size=${pageSize}`
   return this.httpClient.get<GetResponseProducts>(searchUrl);
   }
 
   getProduct(productId: number): Observable<Product>{
     // build url based on the product id
-    const productUrl = `${this.baseUrl}/${productId}`;
+    const productUrl = `${this.productUrl}/${productId}`;
     return this.httpClient.get<Product>(productUrl);
   }
 }

@@ -32,14 +32,13 @@ export class CartService {
   }
 
   computeCartTotals() {
-    let totalPriceValue: number = 0;
+    let totalPriceValue: number = 0.00;
     let totalQuantityValue: number = 0;
 
     for (let currentCartItem of this.cartItems){
-      totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice;
+      totalPriceValue += (currentCartItem.quantity * currentCartItem.unitPrice);
       totalQuantityValue += currentCartItem.quantity;
     }
-
     // publish new values for all subscribers
     this.totalPrice.next(totalPriceValue);
     this.totalQuantity.next(totalQuantityValue);

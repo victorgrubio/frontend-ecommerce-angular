@@ -7,10 +7,11 @@ import { CartService } from 'src/app/services/cart.service';
   templateUrl: './cart-details.component.html',
   styleUrls: ['./cart-details.component.css']
 })
+
 export class CartDetailsComponent implements OnInit {
 
   cartItems: CartItem[] = [];
-  totalPrice: number = 0;
+  totalPrice: number = 0.00;
   totalQuantity: number = 0;
 
   constructor(private cartService: CartService) { }
@@ -22,14 +23,19 @@ export class CartDetailsComponent implements OnInit {
   listCardDetails() {
     // get a handle to the data items
     this.cartItems = this.cartService.cartItems;
-    // subscribe tot the cart total price and quantity
+    // subscribe to the cart total price and quantity
     this.cartService.totalPrice.subscribe(
-      data => this.totalPrice = data
+      data => {
+        this.totalPrice = data;
+      }
     );
     this.cartService.totalQuantity.subscribe(
-      data => this.totalQuantity = data
+      data => {
+        this.totalQuantity = data;
+      }
     )
-
+    //compute cart total price and quantity
+    this.cartService.computeCartTotals();
   }
 
   incrementQuantity(cartItem: CartItem){
