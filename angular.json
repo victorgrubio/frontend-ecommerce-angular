@@ -125,6 +125,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "frontend-ecommerce-angular"
+    }
+  },
+  "defaultProject": "frontend-ecommerce-angular",
+  "cli": {
+    "analytics": "ef0a5516-d900-41ea-b92d-f8a7f6ab3ee1"
+  }
 }
