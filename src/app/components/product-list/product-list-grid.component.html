@@ -17,11 +17,9 @@
                 <!-- if products is empty display message -->
                 <!-- The ? includes null/undefined: if products = null/undefined then if is true -->
                 <div *ngIf="products?.length == 0" class="alert alert-warning col-md-12" role="alert">
-                    No products found.
+                    No products found. Backend is deployed at <strong>Heroku, please reload after 20 seconds.</strong>
                 </div>
             </div>
-
-
             <div class="footer-pagination">
                 <div class="row">
                     <div class="col-md-5"></div>
@@ -39,7 +37,7 @@
                             <div class="col-md-3 mt-2" style="text-align: right;">
                                 <span class="mr-2">Page Size</span>
                                 <select (change)="updatePageSize($event.target.value)">
-                                    <option selected="true"> 5</option>
+                                    <option selected="true">5</option>
                                     <option>10</option>
                                     <option>20</option>
                                     <option>50</option>
