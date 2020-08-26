@@ -2,7 +2,6 @@
 
 Frontend for the Udemy Fullstack: Angular & SpringBoot Course. [Check it out!](https://ecommerce-app.victorgarciarubio.com)
 <br/>
-<br/>
 ![Demo gif](https://media.giphy.com/media/VgaBNoCZ8m4smxzPDc/source.gif)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.4.
