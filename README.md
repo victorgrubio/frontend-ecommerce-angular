@@ -7,6 +7,8 @@ Frontend for the Udemy Fullstack: Angular & SpringBoot Course. [Check it out!](h
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.4.
 
+The REST API has been developed using Spring and it's available in [this repo!](https://github.com/victorgrubio/backend-ecommerce-springboot)
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
